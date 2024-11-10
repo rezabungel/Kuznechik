@@ -1,0 +1,4 @@
+While in the Kuznechik/src/encryption directory, execute the command to compile the source code into a shared library:
+g++ -fPIC -shared -o ../../lib/kuznechik.so kuznechik.cpp
+or
+g++ -DDEBUG -fPIC -shared -o ../../lib/kuznechik.so kuznechik.cpp

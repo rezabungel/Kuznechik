@@ -186,7 +186,7 @@ static void GOST_Kuz_Expand_Key(const uint8_t *key, uint8_t iter_key[COUNT_ITER_
 }
 
 // Block encryption function
-void GOST_Kuz_Encrypt(const uint8_t *blk, const uint8_t *key, uint8_t *out_blk)
+extern "C" void GOST_Kuz_Encrypt(const uint8_t *blk, const uint8_t *key, uint8_t *out_blk)
 {
 #ifdef DEBUG
     std::cout << "*****************************" << std::endl
@@ -231,7 +231,7 @@ void GOST_Kuz_Encrypt(const uint8_t *blk, const uint8_t *key, uint8_t *out_blk)
 }
 
 // Block decryption function
-void GOST_Kuz_Decrypt(const uint8_t *blk, const uint8_t *key, uint8_t *out_blk)
+extern "C" void GOST_Kuz_Decrypt(const uint8_t *blk, const uint8_t *key, uint8_t *out_blk)
 {
 #ifdef DEBUG
     std::cout << "*****************************" << std::endl
