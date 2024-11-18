@@ -6,7 +6,7 @@ from fastapi import APIRouter, Query, HTTPException
 tools_router = APIRouter(prefix="/tools", tags=["tools"])
 
 @tools_router.get("/str-to-hex", status_code=200)
-async def str_to_hex(data_str: Annotated[str, Query(max_length=25)]) -> dict[str, str]:
+async def str_to_hex(data_str: Annotated[str, Query(max_length=32)]) -> dict[str, str]:
     """
     Converts a regular string to a hex string.
 
@@ -15,7 +15,7 @@ async def str_to_hex(data_str: Annotated[str, Query(max_length=25)]) -> dict[str
     Parameters:
     - **data_str**: The regular string to be converted.
       - Must be a valid UTF-8 string.
-      - Length must not exceed 25 characters.
+      - Length must not exceed 32 characters.
 
     Returns:
     - A JSON object with the key `data_hex`, containing the hexadecimal representation of the input string.
@@ -32,7 +32,7 @@ async def str_to_hex(data_str: Annotated[str, Query(max_length=25)]) -> dict[str
     return {"data_hex": data_hex}
 
 @tools_router.get("/hex-to-str", status_code=200)
-async def hex_to_str(data_hex: Annotated[str, Query(max_length=100, pattern="^[0-9a-fA-F]+$")]) -> dict[str, str]:
+async def hex_to_str(data_hex: Annotated[str, Query(max_length=128, pattern="^[0-9a-fA-F]+$")]) -> dict[str, str]:
     """
     Converts a hex string to a regular string.
 
@@ -41,7 +41,7 @@ async def hex_to_str(data_hex: Annotated[str, Query(max_length=100, pattern="^[0
     Parameters:
     - **data_hex**: The hexadecimal string to be converted.
       - Must contain only valid hexadecimal characters `[0-9a-fA-F]`.
-      - Length must be even and not exceed 100 characters.
+      - Length must be even and not exceed 128 characters.
 
     Returns:
     - A JSON object with the key `data_str`, containing the decoded string.
@@ -70,7 +70,7 @@ async def hex_to_str(data_hex: Annotated[str, Query(max_length=100, pattern="^[0
     return {"data_str": data_str}
 
 @tools_router.get("/hex-info", status_code=200)
-async def hex_info(data_hex: Annotated[str, Query(max_length=100, pattern="^[0-9a-fA-F]+$")]) -> dict[str, int]:
+async def hex_info(data_hex: Annotated[str, Query(max_length=128, pattern="^[0-9a-fA-F]+$")]) -> dict[str, int]:
     """
     Provides information about a hex string.
 
@@ -79,7 +79,7 @@ async def hex_info(data_hex: Annotated[str, Query(max_length=100, pattern="^[0-9
     Parameters:
     - **data_hex**: The hexadecimal string for which information is requested.
       - Must contain only valid hexadecimal characters `[0-9a-fA-F]`.
-      - Length must be even and not exceed 100 characters.
+      - Length must be even and not exceed 128 characters.
 
     Returns:
     - A JSON object with the following keys:
