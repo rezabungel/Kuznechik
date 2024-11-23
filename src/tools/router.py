@@ -20,6 +20,10 @@ async def str_to_hex(data_str: Annotated[str, Query(max_length=32)]) -> dict[str
     Returns:
     - A JSON object with the key `data_hex`, containing the hexadecimal representation of the input string.
 
+    Raises:
+    - **422 Unprocessable Entity**:
+        - If the input string exceeds the maximum allowed length (32 characters).
+
     Example:
     ```
     Input: "Hello"
@@ -50,6 +54,9 @@ async def hex_to_str(data_hex: Annotated[str, Query(max_length=128, pattern="^[0
     - **400 Bad Request**: 
         - If the hex string does not have an even number of characters.
         - If the hex string cannot be decoded into valid UTF-8 encoded text.
+    - **422 Unprocessable Entity**:
+        - If the input hex string exceeds the maximum allowed length (128 characters).
+        - If the input hex string contains invalid hexadecimal characters (the string must only contain characters from `[0-9a-fA-F]`).
 
     Example:
     ```
@@ -90,6 +97,9 @@ async def hex_info(data_hex: Annotated[str, Query(max_length=128, pattern="^[0-9
     Raises:
     - **400 Bad Request**: 
         - If the hex string does not have an even number of characters.
+    - **422 Unprocessable Entity**:
+        - If the input hex string exceeds the maximum allowed length (128 characters).
+        - If the input hex string contains invalid hexadecimal characters (the string must only contain characters from `[0-9a-fA-F]`).
 
     Example:
     ```
