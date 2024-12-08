@@ -7,5 +7,8 @@ from config.utils import load_config_from_yaml
 class Settings:
     title: str
     version: str
+    host: str
+    port: int
+    auto_reload: bool
 
 settings = load_config_from_yaml('config.yaml', Settings)
