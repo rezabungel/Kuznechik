@@ -1,47 +1,46 @@
-FROM alpine@sha256:1e42bbe2508154c9126d48c2b8a75420c3544343bf86fd041fb7527e017a4b4a
+# Stage 1: Build C++ shared library for GOST R 34.12-2015 encryption and decryption algorithm
+FROM alpine@sha256:a8560b36e8b8210634f77d9f7f9efd7ffa463e380b75e2e74aff4511df3ef88c AS build-env
+
+# Install build tools
+RUN apk add --no-cache build-base
+
+# Set working directory and copy source files (.h and .cpp needed for build)
+WORKDIR /app
+COPY src/ src/
+
+# Build the shared library
+RUN g++ -DDEBUG -fPIC -shared -static -o kuznechik.so src/encryption/kuznechik.cpp
+
+# Stage 2: Build final image with Python application
+FROM python@sha256:0733909561f552d8557618ee738b2a5cbf3fddfddf92c0fb261b293b90a51f12
 
 LABEL author="Rezabungel"
 
-# Installing dependencies for building Python
-RUN apk update && apk add --no-cache \
-    build-base \
-    libffi-dev \
-    pkgconfig \
-    openssl-dev \
-    zlib-dev
-
-# Downloading and building Python 3.10
-WORKDIR /tmp
-RUN wget https://www.python.org/ftp/python/3.10.15/Python-3.10.15.tgz && \
-    tar xzvf Python-3.10.15.tgz && \
-    cd Python-3.10.15/ && \
-    ./configure --prefix=/opt/python3.10 --enable-optimizations && \
-    make && \
-    make install
-
-# Updating the PATH environment variable to use the installed Python
-ENV PATH="/opt/python3.10/bin:$PATH"
-
-# Installing required Python libraries for the application
+# Install required Python libraries
 COPY requirements.txt .
-RUN pip3.10 install -r requirements.txt
+RUN pip3.10 install --no-cache-dir -r requirements.txt
 
-# Copying source code and configuration files
+# Set working directory and copy source code and configuration files
 WORKDIR /app
 COPY src/ src/
 COPY config/ config/
 
-# Building the shared library
-RUN mkdir lib && \
-    g++ -DDEBUG -fPIC -shared -o lib/kuznechik.so src/encryption/kuznechik.cpp
+# Copy the built shared library from the build stage
+COPY --from=build-env /app/kuznechik.so lib/
 
-# Cleaning up temporary files to reduce the final image size
-RUN rm -r /tmp && \
-    find /app/src/ -type f \( -name "*.h" -o -name "*.cpp" \) -exec rm -f {} +
+# Remove C++ source files (.h and .cpp)
+RUN find /app/src/ -type f \( -name "*.h" -o -name "*.cpp" \) -exec rm -f {} +
 
-# Exposing the port for the application
+# Create a non-root user for security purposes and change the ownership of application files to this user
+RUN adduser -D non-root && \
+    chown -R non-root:non-root /app
+
+# Switch to non-root user
+USER non-root
+
+# Expose the application port
 EXPOSE 8000
 
-# Running the application
+# Set working directory and run the application
 WORKDIR /app/src
-CMD [ "python3.10", "main.py"]
+CMD ["python3.10", "main.py"]
