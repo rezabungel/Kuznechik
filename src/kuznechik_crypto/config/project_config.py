@@ -11,4 +11,4 @@ class Settings:
     port: int
     auto_reload: bool
 
-settings = load_config_from_yaml('config.yaml', Settings)
+settings = load_config_from_yaml('kuznechik_crypto', 'config.yaml', Settings)

@@ -7,18 +7,18 @@ import yaml
 
 T = TypeVar('T')
 
-def get_config_path(yaml_file: str) -> str:
+def get_config_path(service_name: str, yaml_file: str) -> str:
     current_dir = os.path.dirname(__file__)
-    config_path = os.path.join(current_dir, '..', '..', 'config', yaml_file)
+    config_path = os.path.join(current_dir, '..', '..', '..', 'config', service_name, yaml_file)
     return os.path.abspath(config_path)
 
 def get_lib_path(lib_file: str) -> str:
     current_dir = os.path.dirname(__file__)
-    lib_path = os.path.join(current_dir, '..', '..', 'lib', lib_file)
+    lib_path = os.path.join(current_dir, '..', '..', '..', 'lib', lib_file)
     return os.path.abspath(lib_path)
 
-def load_config_from_yaml(yaml_file: str, settings_class: Type[T]) -> T:
-    yaml_file_path = get_config_path(yaml_file)
+def load_config_from_yaml(service_name: str, yaml_file: str, settings_class: Type[T]) -> T:
+    yaml_file_path = get_config_path(service_name, yaml_file)
     with open(yaml_file_path, 'r', encoding='utf-8') as config:
         config_dict = yaml.safe_load(config)
 

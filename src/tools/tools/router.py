@@ -70,7 +70,6 @@ async def hex_to_str(data_hex: Annotated[str, Query(max_length=128, pattern="^[0
 
     try:
         data_str = bytes.fromhex(data_hex).decode("utf-8")
-
     except UnicodeDecodeError:
         raise HTTPException(status_code=400, detail="The input hex string could not be decoded into valid UTF-8 encoded text.")
 
