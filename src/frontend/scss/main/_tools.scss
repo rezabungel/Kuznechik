@@ -1,0 +1,34 @@
+.tools {
+    &__title {
+        margin-bottom: 20px;
+    }
+
+    &__mesh {
+        grid-template-columns: repeat(3, 1fr);
+    }
+
+    &__element {}
+
+    &__name {}
+
+    &__control {
+        margin-bottom: 10px;
+    }
+
+    &__control-input {}
+
+    &__control-button {}
+
+    &__control p {
+        font-size: 0.9rem;
+        margin-top: 10px;
+    }
+
+    &__description {}
+
+    &__description-details {}
+
+    &__description-summary {}
+
+    &__description-pre {}
+}

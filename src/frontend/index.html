@@ -1,0 +1,294 @@
+<!DOCTYPE html>
+<html lang="ru">
+
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="./styles/style.css">
+  <title>Kuznechik API UI with Documentation</title>
+</head>
+
+<body>
+
+  <div class="wrapper">
+
+    <header class="header">
+      <div class="content">
+        <div class="header__title title">
+          Kuznechik API UI with Documentation
+        </div>
+      </div>
+    </header>
+
+    <main class="main">
+      <div class="content">
+        <div class="tools">
+          <div class="tools__title title">Tools</div>
+          <div class="tools__mesh mesh">
+            <div class="tools__element mesh__element">
+              <div class="tools__name mesh__element-name">String to hex</div>
+              <div class="tools__control control">
+                <input class="tools__control-input control__input" id="strInput" type="text" placeholder="Enter string" />
+                <button class="tools__control-button control__button" onclick="convertStrToHex()">Convert</button>
+                <p id="strHexResultContainer">
+                  <span class="result-label">Hex:</span>
+                  <span id="strHexResult"></span>
+                </p>
+              </div>
+              <div class="tools__description description">
+                <details class="tools__description-details description__details">
+                  <summary class="tools__description-summary description__summary">Documentation for "Strig to hex"</summary>
+                  <pre class="tools__description-pre description__pre">
+Converts a regular string to a hex string.
+
+This endpoint takes a regular UTF-8 string as input and converts it to its hexadecimal representation.
+
+Parameters:
+- data_str: The string to be converted.
+  * Must be a valid UTF-8 string.
+  * Length must not exceed 32 characters.
+
+Returns:
+- A JSON object with the key "data_hex" containing the hexadecimal representation.
+
+Raises:
+- 422 Unprocessable Entity: If the input string exceeds 32 characters.
+
+Example:
+Input: "Hello"
+Output: {"data_hex": "48656c6c6f"}
+                  </pre>
+                </details>
+              </div>
+            </div>
+            <div class="tools__element mesh__element">
+              <div class="tools__name mesh__element-name">Hex to string</div>
+              <div class="tools__control control">
+                <input class="tools__control-input control__input" id="hexInput" type="text" placeholder="Enter hex" />
+                <button class="tools__control-button control__button" onclick="convertHexToStr()">Convert</button>
+                <p id="hexStrResultContainer">
+                  <span class="result-label">String:</span>
+                  <span id="hexStrResult"></span>
+                </p>
+              </div>
+              <div class="tools__description description">
+                <details class="tools__description-details description__details">
+                  <summary class="tools__description-summary description__summary">Documentation for "Hex to string"</summary>
+                  <pre class="tools__description-pre description__pre">
+Converts a hex string to a regular string.
+
+This endpoint takes a hexadecimal string as input and converts it to a UTF-8 string.
+
+Parameters:
+- data_hex: The hexadecimal string to be converted.
+  * Must contain only valid hexadecimal characters [0-9a-fA-F].
+  * Length must be even and not exceed 128 characters.
+
+Returns:
+- A JSON object with the key "data_str" containing the decoded string.
+
+Raises:
+- 400 Bad Request: If the hex string does not have an even number of characters or cannot be decoded.
+- 422 Unprocessable Entity: If the input hex string exceeds 128 characters or contains invalid characters.
+
+Example:
+Input: "48656c6c6f"
+Output: {"data_str": "Hello"}
+                    </pre>
+                </details>
+              </div>
+            </div>
+            <div class="tools__element mesh__element">
+              <div class="tools__name mesh__element-name">Hex info</div>
+              <div class="tools__control control">
+                <input class="tools__control-input control__input" id="hexInfoInput" type="text" placeholder="Enter hex" />
+                <button class="tools__control-button control__button" onclick="getHexInfo()">Get Info</button>
+                <p id="hexInfoResultContainer">
+                  <span class="result-label">Info:</span>
+                  <span id="hexInfoResult"></span>
+                </p>
+              </div>
+              <div class="tools__description description">
+                <details class="tools__description-details description__details">
+                  <summary class="tools__description-summary description__summary">Documentation for "Hex info"</summary>
+                  <pre class="tools__description-pre description__pre">
+Provides information about a hex string.
+
+This endpoint takes a hexadecimal string as input and returns information about its length in different units.
+
+Parameters:
+- data_hex: The hexadecimal string for which information is requested.
+  * Must contain only valid hexadecimal characters [0-9a-fA-F].
+  * Length must be even and not exceed 128 characters.
+
+Returns:
+- A JSON object with:
+  * len_hex: Length of the hex string (number of characters).
+  * len_byte: Length in bytes (number of characters / 2).
+  * len_bit: Length in bits (number of characters * 4).
+
+Raises:
+- 400 Bad Request: If the hex string does not have an even number of characters.
+- 422 Unprocessable Entity: If the input hex string exceeds 128 characters or contains invalid characters.
+
+Example:
+Input: "48656c6c6f"
+Output: {"len_hex": 10, "len_byte": 5, "len_bit": 40}
+                  </pre>
+                </details>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="content">
+        <div class="cypher">
+          <div class="cypher__title title">Encrypt / Decrypt</div>
+          <div class="cypher__mesh mesh">
+            <div class="cypher__element mesh__element">
+              <div class="cypher__name mesh__element-name">Encrypt Data</div>
+              <div class="cypher__control control">
+                <input class="cypher__control-input control__input" id="encryptInput" type="text" placeholder="Enter hex data" />
+                <input class="cypher__control-input control__input" id="encryptKey" type="text" placeholder="Enter hex key" />
+                <button class="cypher__control-button control__button" onclick="encryptData()">Encrypt</button>
+                <p id="encryptResultContainer">
+                  <span class="result-label">Encrypted:</span>
+                  <span id="encryptResult"></span>
+                </p>
+              </div>
+              <div class="cypher__description description">
+                <details class="cypher__description-details description__details">
+                  <summary class="cypher__description-summary description__summary">Documentation for "Encrypt Data"</summary>
+                  <pre class="cypher__description-pre description__pre">
+Encrypts a 16-byte block of data using the Kuznechik (GOST R 34.12-2015) block cipher.
+
+This endpoint encrypts a block of data (blk) using a provided encryption key (key).
+Both the block and key are represented as hexadecimal strings.
+
+Zero padding:
+- If the block of data is less than 16 bytes, zero padding is added to the left side to match 16 bytes.
+- If the encryption key is less than 32 bytes, zero padding is added to the left side to match 32 bytes.
+
+Parameters:
+- blk: The block of data to be encrypted (hexadecimal string).
+  * Maximum 16 bytes (32 hex characters). Zero padding is applied if shorter.
+  * Must contain only valid hexadecimal characters [0-9a-fA-F].
+  * Length must be even.
+- key: The encryption key (hexadecimal string).
+  * Maximum 32 bytes (64 hex characters). Zero padding is applied if shorter.
+  * Must contain only valid hexadecimal characters [0-9a-fA-F].
+  * Length must be even.
+
+Returns:
+- A hexadecimal string representing the encrypted block (exactly 16 bytes, 32 hex characters).
+
+Raises:
+- 400 Bad Request: If blk or key does not have an even number of characters.
+- 422 Unprocessable Entity: If the input parameters do not meet validation.
+
+Example:
+Input:
+  blk: "48656c6c6f"
+  key: "576f726c64"
+
+Output:
+  "8479704f8d801853d314e7e060f67a80"
+
+Explanation:
+- blk is zero padded to "000000000000000000000048656c6c6f".
+- key is zero padded to "000000000000000000000000000000000000000000000000000000576f726c64".
+                  </pre>
+                </details>
+              </div>
+            </div>
+            <div class="cypher__element mesh__element">
+              <div class="cypher__name mesh__element-name">Decrypt Data</div>
+              <div class="cypher__control control">
+                <input class="cypher__control-input control__input" id="decryptInput" type="text" placeholder="Enter encrypted hex" />
+                <input class="cypher__control-input control__input" id="decryptKey" type="text" placeholder="Enter hex key" />
+                <button class="cypher__control-button control__button" onclick="decryptData()">Decrypt</button>
+                <p id="decryptedResultContainer">
+                  <span class="result-label">Decrypted:</span>
+                  <span id="decryptedResult"></span>
+                </p>
+              </div>
+              <div class="cypher__description description">
+                <details class="cypher__description-details description__details">
+                  <summary class="cypher__description-summary description__summary">Documentation for "Decrypt Data"</summary>
+                  <pre class="cypher__description-pre description__pre">
+Decrypts a 16-byte encrypted block using the Kuznechik (GOST R 34.12-2015) block cipher.
+
+This endpoint decrypts an encrypted block (blk) using a provided decryption key (key).
+Both the block and key are represented as hexadecimal strings.
+
+Zero padding:
+- The encrypted block is exactly 16 bytes and does not require padding.
+- If the decryption key is less than 32 bytes, zero padding is added to the left side to match 32 bytes.
+- After decryption, zero padding is removed from the left side.
+
+Parameters:
+- blk: The encrypted block to be decrypted (hexadecimal string).
+  * Must be exactly 16 bytes (32 hex characters).
+  * Must contain only valid hexadecimal characters [0-9a-fA-F].
+- key: The decryption key (hexadecimal string).
+  * Maximum 32 bytes (64 hex characters). Zero padding is applied if shorter.
+  * Must contain only valid hexadecimal characters [0-9a-fA-F].
+  * Length must be even.
+
+Returns:
+- A hexadecimal string representing the decrypted block with left zero padding removed.
+
+Raises:
+- 400 Bad Request: If the key does not have an even number of characters.
+- 422 Unprocessable Entity: If the input parameters do not meet validation.
+
+Example:
+Input:
+  blk: "8479704f8d801853d314e7e060f67a80"
+  key: "576f726c64"
+
+Output:
+  "48656c6c6f"
+
+Explanation:
+- The encrypted block is provided as "8479704f8d801853d314e7e060f67a80".
+- The key is zero padded to "000000000000000000000000000000000000000000000000000000576f726c64".
+- After decryption, left zero padding is removed, returning "48656c6c6f".
+                  </pre>
+                </details>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="content">
+        <div class="schemes">
+          <div class="schemes__title title">Schemes</div>
+          <div class="schemes__mesh mesh">
+            <div class="schemes__element mesh__element">
+              <div class="schemes__name mesh__element-name">Encryption / Decryption Scheme</div>
+              <div class="schemes__scheme">
+                <img class="schemes__scheme-img" src="images/encrypt_decrypt_scheme.png" alt="Encryption and Decryption Scheme">
+              </div>
+            </div>
+            <div class="schemes__element mesh__element">
+              <div class="schemes__name mesh__element-name">Iterative (Round) Keys Preparation Scheme</div>
+              <div class="schemes__scheme">
+                <img class="schemes__scheme-img" src="images/key_generation_scheme.png" alt="Key Preparation Scheme">
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </main>
+
+  </div>
+
+  <!-- <script src="./scripts/script.js"></script> -->
+
+</body>
+
+</html>

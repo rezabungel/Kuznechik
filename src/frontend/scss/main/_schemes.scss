@@ -1,0 +1,27 @@
+.schemes {
+    &__title {
+        margin-bottom: 20px;
+    }
+
+    &__mesh {
+        grid-template-columns: repeat(2, 1fr);
+    }
+
+    &__element {}
+
+    &__name {
+        text-align: center;
+    }
+
+    &__scheme {
+        display: flex;
+        justify-content: center;
+    }
+
+    &__scheme-img {
+        max-width: 100%;
+        height: auto;
+        border-radius: 8px;
+        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+    }
+}

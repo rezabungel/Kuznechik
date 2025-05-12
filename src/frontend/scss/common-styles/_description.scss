@@ -1,0 +1,27 @@
+.description {
+    font-size: 0.9rem;
+    margin-top: 10px;
+
+    &__details {
+        margin-top: 10px;
+        border-top: 1px solid #ddd;
+        padding-top: 10px;
+    }
+
+    &__summary {
+        cursor: pointer;
+        font-weight: bold;
+        font-size: 1rem;
+        color: #333;
+        margin-bottom: 5px;
+    }
+
+    &__pre {
+        padding: 10px;
+        border-radius: 4px;
+        overflow: auto;
+        font-size: 0.85rem;
+        line-height: 1.4;
+        white-space: pre-wrap;
+    }
+}
