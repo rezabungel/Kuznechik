@@ -15,7 +15,7 @@ pipeline {
     environment {
         DOCKER_REGISTRY = "ghcr.io"
         REPOSITORY = "rezabungel/kuznechik"
-        SERVICES = "kuznechik_crypto,tools" // Microservices should be listed separated by ","
+        SERVICES = "kuznechik_crypto,tools,frontend" // Microservices should be listed separated by ","
     }
 
     stages {
