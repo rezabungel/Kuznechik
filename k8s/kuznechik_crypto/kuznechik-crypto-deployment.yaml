@@ -1,0 +1,46 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: kuznechik-crypto-deployment
+  labels:
+    app: kuznechik-crypto
+    component: api
+spec:
+  replicas: 2
+  minReadySeconds: 5
+  strategy:
+    type: Recreate
+  selector:
+    matchLabels:
+      app: kuznechik-crypto
+      component: api
+  template:
+    metadata:
+      labels:
+        app: kuznechik-crypto
+        component: api
+    spec:
+      restartPolicy: Always
+      containers:
+      - name: kuznechik-crypto
+        image: ghcr.io/rezabungel/kuznechik/kuznechik_crypto:0.0.1
+        imagePullPolicy: Always
+        resources:
+          requests:
+            cpu: 100m
+            memory: 128Mi
+          limits:
+            cpu: 500m
+            memory: 256Mi
+        ports:
+        - name: api
+          containerPort: 8000
+        livenessProbe:
+          httpGet:
+            path: /health/liveness
+            port: 8000
+          initialDelaySeconds: 5
+          periodSeconds: 5
+          timeoutSeconds: 1
+          successThreshold: 1
+          failureThreshold: 3

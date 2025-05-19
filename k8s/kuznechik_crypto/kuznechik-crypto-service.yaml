@@ -1,0 +1,14 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: kuznechik-crypto-service
+spec:
+  type: ClusterIP
+  selector:
+    app: kuznechik-crypto
+    component: api
+  ports:
+  - name: api
+    protocol: TCP
+    port: 80
+    targetPort: api
