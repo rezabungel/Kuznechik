@@ -6,7 +6,6 @@ pipeline {
         string(name: "branch", defaultValue: "microservices", trim: true, description: "Select the branch to build from")
         string(name: "container_tag", defaultValue: "0.0.1", trim: true, description: "Specify the tag for the container to be built")
 
-        booleanParam(name: "test", defaultValue: false, description:"Enable or disable the Test stage")
         booleanParam(name: "secure_scanning", defaultValue: false, description: "Enable or disable the SecureScanning stage (SAST + SCA)")
         booleanParam(name: "build_docker", defaultValue: false, description: "Enable or disable the Build Docker Images for Microservices stage")
         booleanParam(name: "docker_publish", defaultValue: false, description: "Enable or disable the Publish Docker Images for Microservices stage (To enable, the Build Docker Images for Microservices stage must be enabled)")
@@ -36,12 +35,17 @@ pipeline {
         }
 
         stage("Test") {
-            when {
-                expression { params.test }
-            }
             steps {
                 echo "Start stage Test"
-                // TO DO: Tests
+                withPythonEnv('python3.10') {
+                    sh '''
+                        python --version
+                        pip -V
+                        pip install -r requirements.txt
+                        pytest --junit-xml=test_results.xml
+                    '''
+                }
+                junit testResults: 'test_results.xml'
                 echo "End stage Test"
             }
         }
