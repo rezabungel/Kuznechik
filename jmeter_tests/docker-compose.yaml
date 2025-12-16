@@ -1,0 +1,32 @@
+services:
+  influxdb: # influxdb 1.8
+    container_name: influxdb
+    image: influxdb@sha256:299ebda2c7e308dbef42e26ac9b8fd1d9b3bcb8a0aee80c6509aa0219c1d0290
+    restart: unless-stopped
+    ports:
+      - 8086:8086
+    environment:
+      - INFLUXDB_DB=Test_API_Kuznechik_db
+    volumes:
+      - .influxdb/data:/var/lib/influxdb
+    networks:
+      - jmeter-net
+
+  grafana: # Grafana OSS 10.4.3
+    container_name: grafana
+    image: grafana/grafana@sha256:b7fcb534f7b3512801bb3f4e658238846435804deb479d105b5cdc680847c272
+    restart: unless-stopped
+    depends_on:
+      - influxdb
+    ports:
+      - 3000:3000
+    environment:
+      - GF_SECURITY_ADMIN_PASSWORD=admin
+    volumes:
+      - .grafana/data:/var/lib/grafana
+    networks:
+      - jmeter-net
+
+networks:
+  jmeter-net:
+    driver: bridge

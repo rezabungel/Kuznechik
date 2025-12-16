@@ -3,3 +3,7 @@ __pycache__
 .pytest_cache
 .vscode
 venv
+.influxdb
+.grafana
+.jmeter_logs
+.jmeter_results
